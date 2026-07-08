@@ -1,17 +1,29 @@
 package com.dinkar.ecommerce.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.math.BigDecimal;
 
 public class ProductRequest {
 
+    @NotBlank(message = "Product name is required")
     private String name;
+
     private String description;
+
+    @NotNull(message = "Price is required")
+    @Positive(message = "Price must be positive")
     private BigDecimal price;
+
+    @NotNull(message = "Stock is required")
+    @Positive(message = "Stock must be positive")
     private Integer stock;
+
+    @NotBlank(message = "Category is required")
     private String category;
 
-    public ProductRequest() {
-    }
 
     public String getName() {
         return name;
@@ -21,6 +33,7 @@ public class ProductRequest {
         this.name = name;
     }
 
+
     public String getDescription() {
         return description;
     }
@@ -28,6 +41,7 @@ public class ProductRequest {
     public void setDescription(String description) {
         this.description = description;
     }
+
 
     public BigDecimal getPrice() {
         return price;
@@ -37,6 +51,7 @@ public class ProductRequest {
         this.price = price;
     }
 
+
     public Integer getStock() {
         return stock;
     }
@@ -44,6 +59,7 @@ public class ProductRequest {
     public void setStock(Integer stock) {
         this.stock = stock;
     }
+
 
     public String getCategory() {
         return category;
