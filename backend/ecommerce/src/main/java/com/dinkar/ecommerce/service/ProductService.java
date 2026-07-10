@@ -8,6 +8,9 @@ import com.dinkar.ecommerce.repository.ProductRepository;
 
 import org.springframework.stereotype.Service;
 
+
+import com.dinkar.ecommerce.exception.ProductNotFoundException;
+
 import java.util.List;
 
 
@@ -77,7 +80,9 @@ public class ProductService {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(
-                        () -> new RuntimeException("Product not found")
+                        () -> new ProductNotFoundException(
+                                "Product not found with id: " + id
+                        )
                 );
 
 
@@ -95,9 +100,14 @@ public class ProductService {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(
-                        () -> new RuntimeException("Product not found")
+                        () -> new ProductNotFoundException(
+                                "Product not found with id: " + id
+                        )
                 );
-
+// prevoisly used
+//        .orElseThrow(
+//                () -> new RuntimeException("Product not found")
+//        );
 
         product.setName(request.getName());
         product.setDescription(request.getDescription());
@@ -121,7 +131,9 @@ public class ProductService {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(
-                        () -> new RuntimeException("Product not found")
+                        () -> new ProductNotFoundException(
+                                "Product not found with id: " + id
+                        )
                 );
 
 
