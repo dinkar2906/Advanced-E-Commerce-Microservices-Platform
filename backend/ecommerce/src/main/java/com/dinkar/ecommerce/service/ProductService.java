@@ -1,12 +1,15 @@
 package com.dinkar.ecommerce.service;
 
+
 import com.dinkar.ecommerce.dto.ProductRequest;
+import com.dinkar.ecommerce.dto.ProductResponse;
 import com.dinkar.ecommerce.entity.Product;
 import com.dinkar.ecommerce.repository.ProductRepository;
 
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service
 public class ProductService {
@@ -20,21 +23,24 @@ public class ProductService {
     }
 
 
-//    public Product createProduct(ProductRequest request) {
-//
-//        Product product = new Product();
-//
-//        product.setName(request.getName());
-//        product.setDescription(request.getDescription());
-//        product.setPrice(request.getPrice());
-//        product.setStock(request.getStock());
-//        product.setCategory(request.getCategory());
-//
-//        return productRepository.save(product);
-//    }
+
+    private ProductResponse mapToResponse(Product product){
+
+        return ProductResponse.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .stock(product.getStock())
+                .category(product.getCategory())
+                .build();
+    }
 
 
-    public Product createProduct(ProductRequest request) {
+
+
+    public ProductResponse createProduct(ProductRequest request) {
+
 
         Product product = Product.builder()
                 .name(request.getName())
@@ -44,26 +50,54 @@ public class ProductService {
                 .category(request.getCategory())
                 .build();
 
-        return productRepository.save(product);
+
+        Product savedProduct = productRepository.save(product);
+
+
+        return mapToResponse(savedProduct);
     }
 
 
-    public List<Product> getAllProducts() {
 
-        return productRepository.findAll();
+
+    public List<ProductResponse> getAllProducts() {
+
+
+        return productRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
 
-    public Product getProduct(Long id) {
 
-        return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+    public ProductResponse getProduct(Long id) {
+
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(
+                        () -> new RuntimeException("Product not found")
+                );
+
+
+        return mapToResponse(product);
     }
 
 
-    public Product updateProduct(Long id, ProductRequest request) {
 
-        Product product = getProduct(id);
+
+    public ProductResponse updateProduct(
+            Long id,
+            ProductRequest request
+    ){
+
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(
+                        () -> new RuntimeException("Product not found")
+                );
+
 
         product.setName(request.getName());
         product.setDescription(request.getDescription());
@@ -71,13 +105,25 @@ public class ProductService {
         product.setStock(request.getStock());
         product.setCategory(request.getCategory());
 
-        return productRepository.save(product);
+
+        Product updatedProduct =
+                productRepository.save(product);
+
+
+        return mapToResponse(updatedProduct);
     }
 
 
-    public void deleteProduct(Long id) {
 
-        Product product = getProduct(id);
+
+    public void deleteProduct(Long id){
+
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(
+                        () -> new RuntimeException("Product not found")
+                );
+
 
         productRepository.delete(product);
     }
