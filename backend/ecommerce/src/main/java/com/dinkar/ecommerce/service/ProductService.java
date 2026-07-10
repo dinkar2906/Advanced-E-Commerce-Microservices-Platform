@@ -20,15 +20,29 @@ public class ProductService {
     }
 
 
+//    public Product createProduct(ProductRequest request) {
+//
+//        Product product = new Product();
+//
+//        product.setName(request.getName());
+//        product.setDescription(request.getDescription());
+//        product.setPrice(request.getPrice());
+//        product.setStock(request.getStock());
+//        product.setCategory(request.getCategory());
+//
+//        return productRepository.save(product);
+//    }
+
+
     public Product createProduct(ProductRequest request) {
 
-        Product product = new Product();
-
-        product.setName(request.getName());
-        product.setDescription(request.getDescription());
-        product.setPrice(request.getPrice());
-        product.setStock(request.getStock());
-        product.setCategory(request.getCategory());
+        Product product = Product.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .price(request.getPrice())
+                .stock(request.getStock())
+                .category(request.getCategory())
+                .build();
 
         return productRepository.save(product);
     }
