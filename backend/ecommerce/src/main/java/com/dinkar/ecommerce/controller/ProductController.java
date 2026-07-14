@@ -10,6 +10,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 
 import java.util.List;
 
@@ -93,4 +96,38 @@ public class ProductController {
                 "Product deleted successfully"
         );
     }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<ProductResponse>> getProductsPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+
+        return ResponseEntity.ok(
+                productService.getProductsPage(
+                        PageRequest.of(page, size)
+                )
+        );
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<ProductResponse>> getProductsByCategory(
+            @PathVariable String category
+    ) {
+
+        return ResponseEntity.ok(
+                productService.getProductsByCategory(category)
+        );
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductResponse>> searchProducts(
+            @RequestParam String name
+    ) {
+
+        return ResponseEntity.ok(
+                productService.searchProducts(name)
+        );
+    }
+
 }

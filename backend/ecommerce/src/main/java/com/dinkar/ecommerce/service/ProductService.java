@@ -7,7 +7,8 @@ import com.dinkar.ecommerce.entity.Product;
 import com.dinkar.ecommerce.repository.ProductRepository;
 
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.dinkar.ecommerce.exception.ProductNotFoundException;
 
@@ -72,7 +73,27 @@ public class ProductService {
                 .toList();
     }
 
+    public Page<ProductResponse> getProductsPage(Pageable pageable) {
 
+        return productRepository.findAll(pageable)
+                .map(this::mapToResponse);
+    }
+
+    public List<ProductResponse> getProductsByCategory(String category) {
+
+        return productRepository.findByCategory(category)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    public List<ProductResponse> searchProducts(String name) {
+
+        return productRepository.findByNameContainingIgnoreCase(name)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
 
 
     public ProductResponse getProduct(Long id) {
