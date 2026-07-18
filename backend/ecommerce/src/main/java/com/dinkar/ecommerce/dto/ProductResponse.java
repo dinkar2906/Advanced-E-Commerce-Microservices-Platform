@@ -29,4 +29,7 @@ public class ProductResponse {
 //    2
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+//    3
+private String imageUrl;
 }

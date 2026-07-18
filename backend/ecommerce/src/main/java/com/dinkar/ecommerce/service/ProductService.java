@@ -51,7 +51,8 @@ public class ProductService {
                 .category(product.getCategory())
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())
-                .build();
+                .build()
+                .imageUrl(product.getImageUrl());
     }
 
 
@@ -66,7 +67,8 @@ public class ProductService {
                 .price(request.getPrice())
                 .stock(request.getStock())
                 .category(request.getCategory())
-                .build();
+                .build()
+                .imageUrl(request.getImageUrl());
 
 
         Product savedProduct = productRepository.save(product);
@@ -138,7 +140,8 @@ public class ProductService {
                         () -> new ProductNotFoundException(
                                 "Product not found with id: " + id
                         )
-                );
+                )
+        product.setImageUrl(request.getImageUrl());
 // prevoisly used
 //        .orElseThrow(
 //                () -> new RuntimeException("Product not found")

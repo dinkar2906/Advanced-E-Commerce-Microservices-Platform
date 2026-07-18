@@ -33,4 +33,7 @@ public class ProductRequest {
 
     @NotBlank(message = "Category required")
     private String category;
+
+//    2
+    private String imageUrl;
 }

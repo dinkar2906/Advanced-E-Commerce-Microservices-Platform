@@ -40,4 +40,9 @@ public class Product {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+//        2
+    @Column(length = 500)
+    private String imageUrl;
+
 }
