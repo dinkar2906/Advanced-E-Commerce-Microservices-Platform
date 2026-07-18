@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import com.dinkar.ecommerce.exception.ProductNotFoundException;
 
 import java.util.List;
+import com.dinkar.ecommerce.specification.ProductSpecification;
+import org.springframework.data.domain.Sort;
 
 
 @Service
@@ -177,4 +179,31 @@ public class ProductService {
 
         productRepository.delete(product);
     }
+
+
+    public List<ProductResponse> filterProducts(
+            String category,
+            BigDecimal minPrice,
+            BigDecimal maxPrice,
+            String sortField,
+            String direction
+    ) {
+
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortField).descending()
+                : Sort.by(sortField).ascending();
+
+        return productRepository.findAll(
+                        ProductSpecification.filterProducts(
+                                category,
+                                minPrice,
+                                maxPrice
+                        ),
+                        sort
+                )
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
 }

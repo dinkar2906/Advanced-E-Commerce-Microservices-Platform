@@ -130,4 +130,31 @@ public class ProductController {
         );
     }
 
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<ProductResponse>> filterProducts(
+
+            @RequestParam(required = false) String category,
+
+            @RequestParam(required = false) BigDecimal minPrice,
+
+            @RequestParam(required = false) BigDecimal maxPrice,
+
+            @RequestParam(defaultValue = "id") String sort,
+
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+
+        return ResponseEntity.ok(
+                productService.filterProducts(
+                        category,
+                        minPrice,
+                        maxPrice,
+                        sort,
+                        direction
+                )
+        );
+    }
+
+
 }
