@@ -2,7 +2,7 @@ package com.dinkar.ecommerce.dto;
 
 
 import lombok.*;
-
+import java.time.LocalDateTime;
 import java.math.BigDecimal;
 
 
@@ -25,4 +25,8 @@ public class ProductResponse {
     private Integer stock;
 
     private String category;
+
+//    2
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

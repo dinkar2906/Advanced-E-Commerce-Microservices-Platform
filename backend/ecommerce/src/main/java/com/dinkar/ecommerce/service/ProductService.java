@@ -28,7 +28,19 @@ public class ProductService {
 
 
 
-    private ProductResponse mapToResponse(Product product){
+//    private ProductResponse mapToResponse(Product product){
+//
+//        return ProductResponse.builder()
+//                .id(product.getId())
+//                .name(product.getName())
+//                .description(product.getDescription())
+//                .price(product.getPrice())
+//                .stock(product.getStock())
+//                .category(product.getCategory())
+//                .build();
+//    }
+
+    private ProductResponse mapToResponse(Product product) {
 
         return ProductResponse.builder()
                 .id(product.getId())
@@ -37,6 +49,8 @@ public class ProductService {
                 .price(product.getPrice())
                 .stock(product.getStock())
                 .category(product.getCategory())
+                .createdAt(product.getCreatedAt())
+                .updatedAt(product.getUpdatedAt())
                 .build();
     }
 
