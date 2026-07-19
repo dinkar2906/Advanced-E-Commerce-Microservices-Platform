@@ -4,7 +4,7 @@ package com.dinkar.ecommerce.controller;
 import com.dinkar.ecommerce.dto.ProductRequest;
 import com.dinkar.ecommerce.dto.ProductResponse;
 import com.dinkar.ecommerce.service.ProductService;
-
+import java.math.BigDecimal;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;

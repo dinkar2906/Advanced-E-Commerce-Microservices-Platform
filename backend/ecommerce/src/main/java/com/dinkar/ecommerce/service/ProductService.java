@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import com.dinkar.ecommerce.exception.ProductNotFoundException;
 
 import java.util.List;
+import java.math.BigDecimal;
 import com.dinkar.ecommerce.specification.ProductSpecification;
 import org.springframework.data.domain.Sort;
 
@@ -51,12 +52,11 @@ public class ProductService {
                 .price(product.getPrice())
                 .stock(product.getStock())
                 .category(product.getCategory())
+                .imageUrl(product.getImageUrl())
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())
-                .build()
-                .imageUrl(product.getImageUrl());
+                .build();
     }
-
 
 
 
@@ -69,8 +69,8 @@ public class ProductService {
                 .price(request.getPrice())
                 .stock(request.getStock())
                 .category(request.getCategory())
-                .build()
-                .imageUrl(request.getImageUrl());
+                .imageUrl(request.getImageUrl())
+                .build();
 
 
         Product savedProduct = productRepository.save(product);
@@ -142,7 +142,7 @@ public class ProductService {
                         () -> new ProductNotFoundException(
                                 "Product not found with id: " + id
                         )
-                )
+                );
         product.setImageUrl(request.getImageUrl());
 // prevoisly used
 //        .orElseThrow(
