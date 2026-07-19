@@ -7,18 +7,26 @@ import com.dinkar.ecommerce.entity.User;
 import com.dinkar.ecommerce.exception.ProductNotFoundException;
 import com.dinkar.ecommerce.exception.UserAlreadyExistsException;
 import com.dinkar.ecommerce.repository.UserRepository;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.dinkar.ecommerce.exception.UserNotFoundException;
 
 import java.util.List;
 
 @Service
 public class UserService {
 
+//    private final UserRepository userRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
+    ) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     private UserResponse mapToResponse(User user) {
@@ -42,7 +50,11 @@ public class UserService {
         User user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
-                .password(request.getPassword())
+                .password(
+                passwordEncoder.encode(
+                        request.getPassword()
+                )
+        )
                 .role(Role.USER)
                 .build();
 
@@ -63,7 +75,7 @@ public class UserService {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() ->
-                        new ProductNotFoundException(
+                        new UserNotFoundException(
                                 "User not found with id: " + id
                         )
                 );
