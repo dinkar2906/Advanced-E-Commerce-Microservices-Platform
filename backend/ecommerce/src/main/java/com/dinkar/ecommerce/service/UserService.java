@@ -9,6 +9,9 @@ import com.dinkar.ecommerce.exception.UserAlreadyExistsException;
 import com.dinkar.ecommerce.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.dinkar.ecommerce.dto.AuthResponse;
+import com.dinkar.ecommerce.dto.LoginRequest;
+import com.dinkar.ecommerce.security.JwtService;
 
 import com.dinkar.ecommerce.exception.UserNotFoundException;
 
@@ -21,12 +24,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private final JwtService jwtService;
+
     public UserService(
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            JwtService jwtService
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     private UserResponse mapToResponse(User user) {
@@ -82,4 +89,30 @@ public class UserService {
 
         return mapToResponse(user);
     }
+
+    public AuthResponse login(LoginRequest request) {
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() ->
+                        new UserNotFoundException(
+                                "Invalid email or password"
+                        )
+                );
+
+        if (!passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword())) {
+
+            throw new UserNotFoundException(
+                    "Invalid email or password"
+            );
+        }
+
+        String token = jwtService.generateToken(user.getEmail());
+
+        return AuthResponse.builder()
+                .token(token)
+                .build();
+    }
+
 }

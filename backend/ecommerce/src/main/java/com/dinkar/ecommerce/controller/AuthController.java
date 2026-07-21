@@ -1,11 +1,11 @@
 package com.dinkar.ecommerce.controller;
 
+import com.dinkar.ecommerce.dto.AuthResponse;
+import com.dinkar.ecommerce.dto.LoginRequest;
 import com.dinkar.ecommerce.dto.RegisterRequest;
 import com.dinkar.ecommerce.dto.UserResponse;
 import com.dinkar.ecommerce.service.UserService;
-
 import jakarta.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +21,27 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> registerUser(
-            @Valid @RequestBody RegisterRequest request
+    public ResponseEntity<UserResponse> register(
+            @Valid
+            @RequestBody RegisterRequest request
     ) {
 
         UserResponse response = userService.registerUser(request);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(response);
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.CREATED
+        );
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(
+            @Valid
+            @RequestBody LoginRequest request
+    ) {
+
+        return ResponseEntity.ok(
+                userService.login(request)
+        );
     }
 }
